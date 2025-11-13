@@ -55,6 +55,9 @@ class VlmPipeline(PaginatedPipeline):
 
         self.pipeline_options: VlmPipelineOptions
 
+        # Set images_scale to match VLM scale for correct image cropping
+        self.pipeline_options.images_scale = pipeline_options.vlm_options.scale
+
         # force_backend_text = False - use text that is coming from VLM response
         # force_backend_text = True - get text from backend using bounding boxes predicted by SmolDocling doctags
         self.force_backend_text = (
