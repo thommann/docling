@@ -209,12 +209,17 @@ class VlmPipeline(PaginatedPipeline):
         )
 
         # If forced backend text, replace model predicted text with backend one
-        if page.size:
-            if self.force_backend_text:
-                scale = self.pipeline_options.images_scale
-                for element, _level in conv_res.document.iterate_items():
-                    if not isinstance(element, TextItem) or len(element.prov) == 0:
-                        continue
+        if self.force_backend_text:
+            scale = self.pipeline_options.images_scale
+            for element, _level in conv_res.document.iterate_items():
+                if not isinstance(element, TextItem) or len(element.prov) == 0:
+                    continue
+
+                # Get the correct page for this element
+                page_no = element.prov[0].page_no
+                page = conv_res.pages[page_no - 1]  # page_no is 1-indexed
+
+                if page.size:
                     crop_bbox = (
                         element.prov[0]
                         .bbox.scaled(scale=scale)
