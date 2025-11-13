@@ -230,6 +230,9 @@ class VllmVlmModel(BaseVlmPageModel, HuggingFaceModelDownloadMixin):
                     if hi_res_image is None:
                         continue
 
+                    # Set the default image scale to match VLM scale for later cropping
+                    page._default_image_scale = self.vlm_options.scale
+
                     images.append(hi_res_image)
 
                     # Define prompt structure

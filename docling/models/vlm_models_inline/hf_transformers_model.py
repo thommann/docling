@@ -171,6 +171,10 @@ class HuggingFaceTransformersVlmModel(BaseVlmPageModel, HuggingFaceModelDownload
                         scale=self.vlm_options.scale, max_size=self.vlm_options.max_size
                     )
 
+                    # Set the default image scale to match VLM scale for later cropping
+                    if hi_res_image is not None:
+                        page._default_image_scale = self.vlm_options.scale
+
                     # Only process pages with valid images
                     if hi_res_image is not None:
                         images.append(hi_res_image)
